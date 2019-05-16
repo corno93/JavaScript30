@@ -7,6 +7,13 @@
 </head>
 <body>
 
+  <!-- 
+  kdb is keyboard input. 
+  data-key is a custom 'data' attribute - used to 
+  store custom data private to the page
+  
+  -->
+
 
   <div class="keys">
     <div data-key="65" class="key">
@@ -64,16 +71,20 @@
   }
 
   function playSound(e) {
+    console.log('entered key: ', e)
+    // use attribute selector: so corresponding data-keys are found with eneted keycode
     const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
     const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
     if (!audio) return;
 
+    // add the playing css class to the entered key
     key.classList.add('playing');
-    audio.currentTime = 0;
+    audio.currentTime = 0;// rewind to start - so hammering on buttons will play it appropriately
     audio.play();
   }
 
   const keys = Array.from(document.querySelectorAll('.key'));
+  // transitionend event is fired when a css transition has completed
   keys.forEach(key => key.addEventListener('transitionend', removeTransition));
   window.addEventListener('keydown', playSound);
 </script>
